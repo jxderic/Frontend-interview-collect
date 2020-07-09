@@ -13,6 +13,9 @@
 * [7.isNaN 和 Number.isNaN 函数的区别？](#-isNaN- 和 -Number-isNaN- 函数的区别)
 * [8. Array 构造函数只有一个参数值时的表现？]( #-Array- 构造函数只有一个参数值时的表现)
 * [9.{} 和 [] 的 valueOf 和 toString 的结果是什么？](#-和 的 -valueOf- 和 -toString- 的结果是什么)
+* [10.写一个通用的事件侦听器函数。](#-写一个通用的事件侦听器函数)
+* [11.事件委托是什么？](#-事件委托是什么)
+* [12. 什么是闭包，为什么要用它？](#-什么是闭包为什么要用它)
 
 
 
@@ -134,5 +137,88 @@ Array 构造函数只带一个数字参数的时候，该参数会被作为数�
 {} 的 valueOf 结果为 {} ，toString 的结果为 "[object Object]"
 
 [] 的 valueOf 结果为 [] ，toString 的结果为 ""
+```
+
+#### 10. 写一个通用的事件侦听器函数。
+
+```javascript
+const EventUtils = {
+  // 视能力分别使用dom0||dom2||IE方式 来绑定事件
+  // 添加事件
+  addEvent: function(element, type, handler) {
+    if (element.addEventListener) {
+      element.addEventListener(type, handler, false);
+    } else if (element.attachEvent) {
+      element.attachEvent("on" + type, handler);
+    } else {
+      element["on" + type] = handler;
+    }
+  },
+
+  // 移除事件
+  removeEvent: function(element, type, handler) {
+    if (element.removeEventListener) {
+      element.removeEventListener(type, handler, false);
+    } else if (element.detachEvent) {
+      element.detachEvent("on" + type, handler);
+    } else {
+      element["on" + type] = null;
+    }
+  },
+
+  // 获取事件目标
+  getTarget: function(event) {
+    return event.target || event.srcElement;
+  },
+
+  // 获取 event 对象的引用，取到事件的所有信息，确保随时能使用 event
+  getEvent: function(event) {
+    return event || window.event;
+  },
+
+  // 阻止事件（主要是事件冒泡，因为 IE 不支持事件捕获）
+  stopPropagation: function(event) {
+    if (event.stopPropagation) {
+      event.stopPropagation();
+    } else {
+      event.cancelBubble = true;
+    }
+  },
+
+  // 取消事件的默认行为
+  preventDefault: function(event) {
+    if (event.preventDefault) {
+      event.preventDefault();
+    } else {
+      event.returnValue = false;
+    }
+  }
+};
+```
+
+#### 11. 事件委托是什么？
+
+```
+事件委托本质上是利用了浏览器事件冒泡的机制。因为事件在冒泡过程中会上传到父节点，并且父节点可以通过事件对象获取到
+目标节点，因此可以把子节点的监听函数定义在父节点上，由父节点的监听函数统一处理多个子元素的事件，这种方式称为事件代理。
+
+使用事件代理我们可以不必要为每一个子元素都绑定一个监听事件，这样减少了内存上的消耗。并且使用事件代理我们还可以实现事件的动态绑定，比如说新增了一个子节点，我们并不需要单独地为它添加一个监听事件，它所发生的事件会交给父元素中的监听函数来处理。
+```
+
+#### 12. 什么是闭包，为什么要用它？
+
+```
+闭包是指有权访问另一个函数作用域中变量的函数，创建闭包的最常见的方式就是在一个函数内创建另一个函数，创建的函数可以
+访问到当前函数的局部变量。
+
+闭包有两个常用的用途。
+
+闭包的第一个用途是使我们在函数外部能够访问到函数内部的变量。通过使用闭包，我们可以通过在外部调用闭包函数，从而在外
+部访问到函数内部的变量，可以使用这种方法来创建私有变量。
+
+函数的另一个用途是使已经运行结束的函数上下文中的变量对象继续留在内存中，因为闭包函数保留了这个变量对象的引用，所以
+这个变量对象不会被回收。
+
+其实闭包的本质就是作用域链的一个特殊的应用，只要了解了作用域链的创建过程，就能够理解闭包的实现原理。
 ```
 
