@@ -6,7 +6,7 @@
 
 * [1. 什么是堆？什么是栈？它们之间有什么区别和联系？](#-什么是堆什么是栈它们之间有什么区别和联系)
 * [2. 内部属性 [[Class]]是什么？ ](#-内部属性 -Class- 是什么)
-* 
+* [3. Javascript 中，有一个函数，执行时对象查找时，永远不会去查找原型，这个函数是？](#-Javascript -中，有一个函数，执行时对象查找时，永远不会去查找原型，这个函数是)
 
 
 
@@ -37,5 +37,14 @@ Object.prototype.toString.call( [1,2,3] );
 Object.prototype.toString.call( /regex-literal/i );
 // "[object RegExp]"
 
+```
+
+#### 3. Javascript 中，有一个函数，执行时对象查找时，永远不会去查找原型，这个函数是？
+
+```
+hasOwnProperty
+
+所有继承了 Object 的对象都会继承到 hasOwnProperty 方法。这个方法可以用来检测一个对象是否含有特定的自身属性，和
+in 运算符不同，该方法会忽略掉那些从原型链上继承到的属性。
 ```
 
