@@ -6,7 +6,7 @@
 
 * [1. 页面导入样式时，使用link和@import有什么区别？](#1-页面导入样式时使用-link-和-import-有什么区别)
 * [2. 行内元素与块级元素的区别？](#2-行内元素与块级元素的区别)
-* [3.DOMContentLoaded 事件和 Load 事件的区别？](#-DOMContentLoaded- 事件和- Load- 事件的区别)
+* [3.DOMContentLoaded 事件和 Load 事件的区别？](#3-DOMContentLoaded- 事件和- Load- 事件的区别)
 
 
 
